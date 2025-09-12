@@ -1,5 +1,5 @@
 export const SITE = {
-  website: "https://recipes.www.venger.me/", // replace this with your deployed domain
+  website: "https://recipes.venger.me/", // replace this with your deployed domain
   author: "Eugene Venger",
   profile: "https://www.venger.me/",
   desc: "Recipes for the everyday home cook - healthy and sooo tasty.",
