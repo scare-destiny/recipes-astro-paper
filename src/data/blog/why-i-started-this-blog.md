@@ -6,23 +6,23 @@ draft: false
 tags:
   - recipes
   - personal
-description: How to use Git Hooks to set your Created and Modified Dates on AstroPaper
+description: Why I started this blog - to share my love for cooking, honor my mother's memory, and document everything I learn — especially about food, writing, and life.
 ---
 
 
 Hej you, welcome!
 
-![something](@/assets/images/Eugene_Venger.jpg)
+![personal photo of Eugene Venger](@/assets/images/Eugene_Venger.jpg)
 
-I love cooking. Really. It means a lot to me. Smells, creativity, making food for someone else.
+I love cooking. Really. It means a lot to me. The smells, creativity, making food for someone else.
 
-And even more, it's personal for me. My mother passed away, and when she died I feel like when I cook I'm with her again.
+And even more, it's personal for me. My mother passed away, and when she died I felt like when I cook, I'm with her again.
 
-![something](@/assets/images/Eugene_Venger_and_his_mom.jpg)
+![Eugene Venger and his mother](@/assets/images/Eugene_Venger_and_his_mom.jpg)
 
 
-And also I like writing. And my life principle is to share everything I learn. Now I learn and cook a lot. 
-So why not combine both?
+I also like writing. And my life principle is to share everything I learn. Now I learn and cook a lot, so why not combine both?
 
-Sooo I plan to share. I like spicy (wanna learn more of Indian cuisine), nutritious foods, veggies. 
+So I plan to share! I like spicy food (I want to learn more about Indian cuisine), nutritious foods, and veggies.
 
+Join me for the ride. It should be fun and smell like your cherished memories!
