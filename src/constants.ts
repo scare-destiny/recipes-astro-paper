@@ -7,6 +7,7 @@ import IconWhatsapp from "@/assets/icons/IconWhatsapp.svg";
 import IconFacebook from "@/assets/icons/IconFacebook.svg";
 import IconTelegram from "@/assets/icons/IconTelegram.svg";
 import IconPinterest from "@/assets/icons/IconPinterest.svg";
+import IconInstagram from "@/assets/icons/IconInstagram.svg";
 import { SITE } from "@/config";
 
 interface Social {
@@ -19,27 +20,27 @@ interface Social {
 export const SOCIALS: Social[] = [
   {
     name: "GitHub",
-    href: "https://github.com/satnaing/astro-paper",
-    linkTitle: `${SITE.title} on GitHub`,
+    href: "https://github.com/scare-destiny/",
+    linkTitle: `${SITE.author} on GitHub`,
     icon: IconGitHub,
   },
   {
-    name: "X",
-    href: "https://x.com/username",
-    linkTitle: `${SITE.title} on X`,
-    icon: IconBrandX,
-  },
-  {
     name: "LinkedIn",
-    href: "https://www.linkedin.com/in/username/",
-    linkTitle: `${SITE.title} on LinkedIn`,
+    href: "https://www.linkedin.com/in/eugenevenger/",
+    linkTitle: `${SITE.author} on LinkedIn`,
     icon: IconLinkedin,
   },
   {
     name: "Mail",
-    href: "mailto:yourmail@gmail.com",
-    linkTitle: `Send an email to ${SITE.title}`,
+    href: "mailto:eugene@venger.me",
+    linkTitle: `Send an email to ${SITE.author}`,
     icon: IconMail,
+  },
+  {
+    name: "Instagram",
+    href: "https://www.instagram.com/eugene.venger/",
+    linkTitle: `${SITE.author} on X`,
+    icon: IconInstagram,
   },
 ] as const;
 
