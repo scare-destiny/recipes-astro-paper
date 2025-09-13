@@ -202,14 +202,14 @@ You can use relative path or alias path (`@/assets/`) to serve these images.
 Example: Suppose you want to display `example.jpg` whose path is `/src/assets/images/example.jpg`.
 
 ```md
-![something](@/assets/images/example.jpg)
+<!-- ![something](@/assets/images/example.jpg) -->
 
 <!-- OR -->
 
-![something](../../assets/images/example.jpg)
+<!-- ![something](../../assets/images/example.jpg) -->
 
 <!-- Using img tag or Image component won't work ❌ -->
-<img src="@/assets/images/example.jpg" alt="something">
+<!-- <img src="@/assets/images/example.jpg" alt="something"> -->
 <!-- ^^ This is wrong -->
 ```
 
