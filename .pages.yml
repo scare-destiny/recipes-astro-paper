@@ -9,7 +9,7 @@ content:
     view:
       fields: [ title, draft, Date , author ]
     fields:
-      - { name: author, label: Author, type: string }
+      - { name: author, label: Author, type: string, required: true }
       - { name: pubDatetime, label: Date of Publishing, type: date, required: true }
       - { name: modDatetime, label: Date of Modifying, type: date}
       - { name: title, label: Title, type: string, required: true }
@@ -17,7 +17,7 @@ content:
       - { name: slug, label: Slug, type: string }
       - { name: featured, label: Featured, type: boolean }
       - { name: draft, label: Draft, type: boolean }
-      - { name: tags, label: Tags, type: string, list: true }
+      - { name: tags, label: Tags, type: string, list: true, required: true }
       - { name: description, label: Description, type: string }
       - { name: body, label: Body, type: rich-text }
   - name: about
