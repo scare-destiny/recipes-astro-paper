@@ -10,7 +10,7 @@ description: "My take on creamy Tuscan chicken—rich, hearty, and easy. I follo
 
 I made this creamy Tuscan chicken—super tasty and hearty!
 
-![Photo of yummy Tuscan Chicken](@/assets/images/Tuscan_chicken.png)
+![Photo of yummy Tuscan Chicken](@/assets/images/Tuscan_chicken.webp)
 
 I mostly followed [this guide](https://www.delish.com/cooking/recipe-ideas/a19636089/creamy-tuscan-chicken-recipe/).
 
