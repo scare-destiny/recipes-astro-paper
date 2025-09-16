@@ -1,7 +1,7 @@
 export const SITE = {
-    website: "https://venger.me",
+    website: "https://www.venger.me/",
     author: "Eugene Venger",
-    profile: "https://venger.me/",
+    profile: "https://www.venger.me/",
     desc: "Eugene Venger - My Blog.",
     title: "Blog",
     ogImage: "astropaper-og.jpg",
