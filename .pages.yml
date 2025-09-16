@@ -7,7 +7,7 @@ content:
     type: collection
     path: src/data/blog
     view:
-      fields: [ title, draft, pubDatetime, modDatetime, author ]
+      fields: [ title, draft, Date , author ]
     fields:
       - { name: author, label: Author, type: string }
       - { name: pubDatetime, label: Date, type: date }
