@@ -1,13 +1,14 @@
 ---
-pubDatetime: 2025-09-16T19:25:24+00:00
+author: Eugene Venger
 title: Crazy Tasty Tuscan Chicken
 featured: false
 draft: false
 tags:
   - cooking
-description: "My take on creamy Tuscan chicken—rich, hearty, and easy. I followed a classic recipe with one twist: Herbes de Provence instead of oregano. The sauce is incredible, especially over rice."
+description: "My take on creamy Tuscan chicken—rich, hearty, and easy. I
+  followed a classic recipe with one twist: Herbes de Provence instead of
+  oregano. The sauce is incredible, especially over rice."
 ---
-
 I made this creamy Tuscan chicken—super tasty and hearty!
 
 ![Photo of yummy Tuscan Chicken](@/assets/images/Tuscan_chicken.webp)
