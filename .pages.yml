@@ -7,7 +7,7 @@ content:
     type: collection
     path: src/data/blog
     view:
-      fields: [ title, draft, pubDatetime , author ]
+      fields: [ title, draft, pubDatetime , author, tags, slug ]
     fields:
       - { name: author, label: Author, type: string, required: true }
       - { name: pubDatetime, label: Date of Publishing, type: date, required: true }
