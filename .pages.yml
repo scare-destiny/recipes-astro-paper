@@ -9,7 +9,16 @@ content:
     view:
       fields: [ title, draft, pubDatetime , author, tags, slug ]
     fields:
-      - { name: author, label: Author, type: string, required: true }
+      - name: author
+        label: Author
+        type: select
+        options:
+          values:
+            - value: eugene
+              label: Eugene Venger
+            - value: karina
+              label: Karina Venger
+        required: true
       - { name: pubDatetime, label: Date of Publishing, type: date, required: true }
       - { name: modDatetime, label: Date of Modifying, type: date}
       - { name: title, label: Title, type: string, required: true }
@@ -18,5 +27,4 @@ content:
       - { name: draft, label: Draft, type: boolean }
       - { name: tags, label: Tags, type: string, list: true, required: true }
       - { name: description, label: Description, type: string }
-      - { name: body, label: Body, type: rich-text },
- 
+      - { name: body, label: Body, type: rich-text }
