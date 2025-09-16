@@ -14,9 +14,9 @@ content:
         type: select
         options:
           values:
-            - value: eugene
+            - value: Eugene Venger
               label: Eugene Venger
-            - value: karina
+            - value: Karina Venger
               label: Karina Venger
         required: true
       - { name: pubDatetime, label: Date of Publishing, type: date, required: true }
