@@ -18,7 +18,8 @@ content:
       - { name: draft, label: Draft, type: boolean }
       - { name: tags, label: Tags, type: string, list: true, required: true }
       - { name: description, label: Description, type: string }
-      - { name: body, label: Body, type: rich-text }
+      - { name: body, label: Body, type: rich-text },
+      - {name: CoverImage, label: Cover Image, type: image }
   - name: about
     label: About page
     type: file
