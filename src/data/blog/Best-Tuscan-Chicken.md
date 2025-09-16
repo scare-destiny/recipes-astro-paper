@@ -4,7 +4,7 @@ title: Crazy Tasty Tuscan Chicken
 featured: false
 draft: false
 tags:
-  - recipes
+  - cooking
 description: "My take on creamy Tuscan chicken—rich, hearty, and easy. I followed a classic recipe with one twist: Herbes de Provence instead of oregano. The sauce is incredible, especially over rice."
 ---
 
