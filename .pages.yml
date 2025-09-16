@@ -25,6 +25,18 @@ content:
       - { name: slug, label: Slug, type: string }
       - { name: featured, label: Featured, type: boolean }
       - { name: draft, label: Draft, type: boolean }
-      - { name: tags, label: Tags, type: string, list: true, required: true }
+      - name: tags
+        label: Tags
+        type: select
+        list: true
+        options:
+          values:
+            - value: cooking
+              label: Cooking
+            - value: personal
+              label: Personal
+            - value: family
+              label: Family
+        required: true
       - { name: description, label: Description, type: string }
       - { name: body, label: Body, type: rich-text }
