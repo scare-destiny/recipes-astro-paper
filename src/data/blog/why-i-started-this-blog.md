@@ -4,7 +4,6 @@ title: Why I started this blog
 featured: true
 draft: false
 tags:
-  - cooking
   - personal
 description: Why I started this blog - to share my love for cooking, honor my mother's memory, and document everything I learn — especially about food, writing, and life.
 ---
