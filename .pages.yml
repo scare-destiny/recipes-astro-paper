@@ -10,7 +10,7 @@ content:
       fields: [ title, draft, Date , author ]
     fields:
       - { name: author, label: Author, type: string }
-      - { name: pubDatetime, label: Date of Publishing, type: date }
+      - { name: pubDatetime, label: Date of Publishing, type: date, required: true }
       - { name: modDatetime, label: Date of Modifying, type: date }
       - { name: title, label: Title, type: string, required: true }
       - { name: ogImage, label: Title, type: string }
