@@ -5,16 +5,17 @@ featured: false
 draft: false
 tags:
   - recipes
-description: Why I started this blog - to share my love for cooking, honor my mother's memory, and document everything I learn — especially about food, writing, and life.
+description: My take on creamy Tuscan chicken—rich, hearty, and easy. I followed a classic recipe with one twist: Herbes de Provence instead of oregano. The sauce is incredible, especially over rice.
 ---
 
-
-This is what I made. Super tasty and hearty!
+I made this creamy Tuscan chicken—super tasty and hearty!
 
 ![Photo of yummy Tuscan Chicken](@/assets/images/Tuscan_chicken.png)
 
-Honestly, I've mostly followed [this](https://www.delish.com/cooking/recipe-ideas/a19636089/creamy-tuscan-chicken-recipe/) guide.
+I mostly followed [this guide](https://www.delish.com/cooking/recipe-ideas/a19636089/creamy-tuscan-chicken-recipe/).
 
-It turned out to be a well-rounded recipe.
+It turned out well-balanced and full of flavor.
 
-The only thing I made differently is I used Herbes de Provence (what a fancy name) instead of oregano.
+The only change I made: I used Herbes de Provence (fancy, right?) instead of oregano.
+
+Highly recommend. The sauce is incredible—I served it with rice.
