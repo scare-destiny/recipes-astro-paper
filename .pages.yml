@@ -7,24 +7,36 @@ content:
     type: collection
     path: src/data/blog
     view:
-      fields: [ title, draft, Date , author ]
+      fields: [ title, draft, pubDatetime , author, tags, slug ]
     fields:
-      - { name: author, label: Author, type: string, required: true }
+      - name: author
+        label: Author
+        type: select
+        options:
+          values:
+            - value: Eugene Venger
+              label: Eugene Venger
+            - value: Karina Venger
+              label: Karina Venger
+        required: true
       - { name: pubDatetime, label: Date of Publishing, type: date, required: true }
       - { name: modDatetime, label: Date of Modifying, type: date}
       - { name: title, label: Title, type: string, required: true }
       - { name: slug, label: Slug, type: string }
       - { name: featured, label: Featured, type: boolean }
       - { name: draft, label: Draft, type: boolean }
-      - { name: tags, label: Tags, type: string, list: true, required: true }
+      - name: tags
+        label: Tags
+        type: select
+        list: true
+        options:
+          values:
+            - value: cooking
+              label: Cooking
+            - value: personal
+              label: Personal
+            - value: family
+              label: Family
+        required: true
       - { name: description, label: Description, type: string }
-      - { name: body, label: Body, type: rich-text },
-      - {name: CoverImage, label: Cover Image, type: image }
-  - name: about
-    label: About page
-    type: file
-    path: src/pages/about.md
-    fields:
-      - { name: layout, type: string, hidden: true, default: "../layouts/AboutLayout.astro" }
-      - { name: title, label: Title, type: string }
-      - { name: body, label: Body, type: rich-text, options: { input: public/assets, output: /assets } }
+      - { name: body, label: Body, type: rich-text }
