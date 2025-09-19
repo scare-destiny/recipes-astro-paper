@@ -1,0 +1,236 @@
+---
+// src/components/LikeButton.astro
+export interface Props {
+  slug: string;
+}
+
+const { slug } = Astro.props;
+
+// Get initial like count from Supabase
+let initialLikes = 0;
+try {
+  const response = await fetch(`${Astro.url.origin}/api/likes/${encodeURIComponent(slug)}`);
+  if (response.ok) {
+    const data = await response.json();
+    initialLikes = data.likes;
+  }
+} catch (error) {
+  console.error('Error fetching initial likes:', error);
+}
+---
+
+<div class="like-button-container" data-slug={slug}>
+  <button class="like-button" aria-label="Like this post">
+    <svg width="24" height="20" viewBox="0 0 50 42" fill="none" class="heart-icon">
+      <defs>
+        <linearGradient id={`active-gradient-${slug}`} x1="25" y1="42" x2="26.3796" y2="0.0453673" gradientUnits="userSpaceOnUse">
+          <stop stop-color="hsl(353deg, 100%, 52%)"></stop>
+          <stop offset="1" stop-color="hsl(313deg, 100%, 52%)"></stop>
+        </linearGradient>
+        <linearGradient id={`inactive-gradient-${slug}`} x1="15" y1="41" x2="42" y2="-1.5" gradientUnits="userSpaceOnUse">
+          <stop stop-color="#666" stop-opacity="0.8"></stop>
+          <stop offset="1" stop-color="#999" stop-opacity="0.8"></stop>
+        </linearGradient>
+      </defs>
+      <path 
+        class="heart-path"
+        d="M13.2537 0.0255029C23.4033 0.0255029 25.0273 10.5191 25.0273 10.5191C25.0273 10.5191 26.6512 -0.60088 37.6129 0.0255029C44.3441 0.410148 48.7484 6.32169 48.9804 12.1981C49.7924 32.7656 28.7678 41.5 25.0273 41.5C21.2868 41.5 -0.549833 32.3459 1.07416 12.1981C1.54782 6.32169 6.29929 0.0255029 13.2537 0.0255029Z" 
+        fill={`url(#inactive-gradient-${slug})`}
+      />
+    </svg>
+  </button>
+  <span class="like-count">{initialLikes.toLocaleString()}</span>
+</div>
+
+<style>
+  .like-button-container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 1rem 0;
+  }
+
+  .like-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .like-button:hover {
+    background-color: rgba(255, 0, 0, 0.1);
+    transform: scale(1.05);
+  }
+
+  .like-button:active {
+    transform: scale(0.95);
+  }
+
+  .heart-icon {
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+
+  .like-button:hover .heart-icon {
+    transform: scale(1.1);
+  }
+
+  .heart-path {
+    transition: fill 0.3s ease;
+  }
+
+  .like-button.liked .heart-path {
+    fill: url(#active-gradient-{slug});
+    animation: heartBeat 0.6s ease;
+  }
+
+  .like-count {
+    font-weight: 600;
+    color: var(--text-color, #333);
+    font-size: 0.9rem;
+    min-width: 2rem;
+    text-align: left;
+    transition: all 0.3s ease;
+  }
+
+  .like-count.updating {
+    transform: scale(1.2);
+    color: #ff0066;
+  }
+
+  @keyframes heartBeat {
+    0% { transform: scale(1); }
+    14% { transform: scale(1.3); }
+    28% { transform: scale(1); }
+    42% { transform: scale(1.15); }
+    70% { transform: scale(1); }
+  }
+
+  @keyframes countUp {
+    0% { 
+      transform: translateY(0); 
+      opacity: 1; 
+    }
+    50% { 
+      transform: translateY(-10px); 
+      opacity: 0.5; 
+    }
+    100% { 
+      transform: translateY(0); 
+      opacity: 1; 
+    }
+  }
+
+  /* Sparkle effect for extra fun */
+  .like-button.clicked {
+    position: relative;
+  }
+
+  .like-button.clicked::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,0,102,0.6) 0%, transparent 70%);
+    animation: sparkle 0.6s ease-out;
+    pointer-events: none;
+  }
+
+  @keyframes sparkle {
+    0% {
+      width: 0;
+      height: 0;
+      transform: translate(-50%, -50%);
+    }
+    100% {
+      width: 60px;
+      height: 60px;
+      transform: translate(-50%, -50%);
+      opacity: 0;
+    }
+  }
+</style>
+
+<script>
+  class LikeButton {
+    private container: HTMLElement;
+    private button: HTMLButtonElement;
+    private countElement: HTMLElement;
+    private slug: string;
+    private isLiking: boolean;
+
+    constructor(container: HTMLElement) {
+      this.container = container;
+      this.button = container.querySelector('.like-button') as HTMLButtonElement;
+      this.countElement = container.querySelector('.like-count') as HTMLElement;
+      this.slug = container.dataset.slug || '';
+      this.isLiking = false;
+
+      this.button.addEventListener('click', this.handleLike.bind(this));
+    }
+
+    async handleLike() {
+      if (this.isLiking) return;
+      
+      this.isLiking = true;
+      
+      // Immediate visual feedback
+      this.button.classList.add('clicked', 'liked');
+      this.countElement.classList.add('updating');
+      
+      try {
+        const response = await fetch('/api/likes/add', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ slug: this.slug }),
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          
+          // Animate count update
+          setTimeout(() => {
+            this.countElement.textContent = data.likes.toLocaleString();
+            this.countElement.style.animation = 'countUp 0.4s ease';
+          }, 100);
+          
+          // Reset animation classes
+          setTimeout(() => {
+            this.countElement.classList.remove('updating');
+            this.countElement.style.animation = '';
+          }, 400);
+          
+        } else {
+          // Revert on error
+          this.button.classList.remove('liked');
+          console.error('Failed to add like');
+        }
+      } catch (error) {
+        // Revert on error
+        this.button.classList.remove('liked');
+        console.error('Error adding like:', error);
+      } finally {
+        this.isLiking = false;
+        // Remove clicked class after animation
+        setTimeout(() => {
+          this.button.classList.remove('clicked');
+        }, 600);
+      }
+    }
+  }
+
+  // Initialize all like buttons on the page
+  document.addEventListener('DOMContentLoaded', () => {
+    const likeContainers = document.querySelectorAll('.like-button-container');
+    likeContainers.forEach(container => new LikeButton(container as HTMLElement));
+  });
+</script>
