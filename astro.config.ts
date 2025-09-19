@@ -18,6 +18,9 @@ import react from "@astrojs/react";
 // https://astro.build/config
 export default defineConfig({
   site: SITE.website,
+  redirects: {
+    '/blog/data-engineering-primer-part-1': '/posts/data-engineering-primer-part-1'
+  },
   integrations: [sitemap({
     filter: page => SITE.showArchives || !page.endsWith("/archives"),
   }), mdx(), react()],
