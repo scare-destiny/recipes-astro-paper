@@ -2,7 +2,7 @@
 import { ClientRouter } from "astro:transitions";
 import { PUBLIC_GOOGLE_SITE_VERIFICATION } from "astro:env/client";
 import { SITE } from "@/config";
-import PostHog from '@/components/analytics/Posthog.astro'
+import Umami from '@/components/analytics/Umami.astro'
 import "@/styles/global.css";
 
 export interface Props {
@@ -129,7 +129,7 @@ const structuredData = {
       )
     }
 
-    <PostHog />
+    <Umami />
 
 
     <ClientRouter />
