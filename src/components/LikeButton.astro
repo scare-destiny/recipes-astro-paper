@@ -179,18 +179,14 @@ try {
   }
 </style>
 
-<script>
+<script is:inline data-astro-rerun >
   class LikeButton {
-    private container: HTMLElement;
-    private button: HTMLButtonElement;
-    private countElement: HTMLElement;
-    private slug: string;
-    private isLiking: boolean;
+    
 
-    constructor(container: HTMLElement) {
+    constructor(container) {
       this.container = container;
-      this.button = container.querySelector('.like-button') as HTMLButtonElement;
-      this.countElement = container.querySelector('.like-count') as HTMLElement;
+      this.button = container.querySelector('.like-button') ;
+      this.countElement = container.querySelector('.like-count') ;
       this.slug = container.dataset.slug || '';
       this.isLiking = false;
 
@@ -294,9 +290,9 @@ try {
     }
 
     // Method to show user-friendly error messages
-    showErrorMessage(message: string) {
+    showErrorMessage(message) {
       // Create or update error message element
-      let errorElement = this.container.querySelector('.like-error-message') as HTMLElement;
+      let errorElement = this.container.querySelector('.like-error-message') ;
       
       if (!errorElement) {
         errorElement = document.createElement('div');
@@ -322,7 +318,7 @@ try {
   }
 
   // Global registry to keep track of initialized buttons
-  let likeButtonInstances: LikeButton[] = [];
+  let likeButtonInstances = [];
 
   function initializeLikeButtons() {
     console.log('Initializing like buttons...');
@@ -336,7 +332,7 @@ try {
     console.log(`Found ${likeContainers.length} like button containers`);
     
     likeContainers.forEach(container => {
-      const instance = new LikeButton(container as HTMLElement);
+      const instance = new LikeButton(container );
       likeButtonInstances.push(instance);
       // Refresh count on initialization (for navigation)
       instance.refreshLikeCount();
