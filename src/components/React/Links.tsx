@@ -419,7 +419,7 @@ export default function Links() {
             className="text-center pt-8"
           >
             <p className="text-gray-400 text-sm">
-              Made with ❤️ and a touch of{' '}
+              Made with ❤️ 
               <span className="text-pink-500 font-medium">creativity</span>
             </p>
           </motion.div>
