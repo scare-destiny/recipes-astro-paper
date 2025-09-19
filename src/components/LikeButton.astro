@@ -192,12 +192,26 @@ try {
       
       try {
         console.log('Sending POST request to /api/likes/add');
+        
+        // Collect analytics data
+        const analyticsData = {
+          userAgent: navigator.userAgent,
+          language: navigator.language,
+          referrer: document.referrer,
+          screenResolution: `${screen.width}x${screen.height}`,
+          timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+          timestamp: new Date().toISOString()
+        };
+        
         const response = await fetch('/api/likes/add', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ slug: this.slug }),
+          body: JSON.stringify({ 
+            slug: this.slug,
+            analytics: analyticsData
+          }),
         });
 
         console.log('Response status:', response.status, response.statusText);

@@ -10,12 +10,12 @@ const supabase = createClient(
   import.meta.env.PUBLIC_SUPABASE_ANON_KEY
 );
 
-export const POST: APIRoute = async ({ request }) => {
+export const POST: APIRoute = async ({ request, clientAddress }) => {
   try {
     const body = await request.json();
     console.log('Request body:', body);
     
-    const { slug } = body;
+    const { slug, analytics } = body;
     
     if (!slug) {
       console.error('No slug provided');
@@ -27,10 +27,38 @@ export const POST: APIRoute = async ({ request }) => {
 
     console.log('Adding like for slug:', slug);
 
+    // Get geolocation data
+    let locationData: any = {};
+    try {
+      const ip = clientAddress || '127.0.0.1';
+      const geoResponse = await fetch(`http://ip-api.com/json/${ip}?fields=status,country,countryCode,region,regionName,city,timezone,query`);
+      if (geoResponse.ok) {
+        locationData = await geoResponse.json();
+      }
+    } catch (geoError) {
+      console.log('Geolocation fetch failed:', geoError);
+    }
+
+    // Prepare like data with analytics
+    const likeData = {
+      post_slug: slug,
+      user_agent: analytics?.userAgent || null,
+      ip_address: clientAddress || null,
+      country: locationData.country || null,
+      city: locationData.city || null,
+      region: locationData.regionName || null,
+      timezone: analytics?.timezone || locationData.timezone || null,
+      referrer: analytics?.referrer || null,
+      language: analytics?.language || null,
+      // analytics_data: analytics ? JSON.stringify(analytics) : null
+    };
+
+    console.log('Like data:', likeData);
+
     // Add the like
     const { error: insertError } = await supabase
       .from('post_likes')
-      .insert({ post_slug: slug });
+      .insert(likeData);
 
     if (insertError) {
       console.error('Error inserting like:', insertError);
