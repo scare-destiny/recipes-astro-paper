@@ -11,7 +11,7 @@ export interface Props extends CollectionEntry<"blog"> {
 
 const { variant = "h2", data, id, filePath } = Astro.props;
 
-const { title, description, pubDatetime, modDatetime, timezone, author, tags } = data;
+const { title, description, pubDatetime, modDatetime, timezone, tags, ogImage } = data;
 
 const headerProps = {
   style: { viewTransitionName: slugifyStr(title) },
@@ -37,5 +37,6 @@ const headerProps = {
   <ul class="">
     {tags.map(tag => <Tag tag={slugifyStr(tag)} tagName={tag} />)}
   </ul>
+  
 
 </li>
