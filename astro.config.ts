@@ -19,10 +19,7 @@ import react from "@astrojs/react";
 export default defineConfig({
   site: SITE.website,
   redirects: {
-    "/blog/data-engineering-primer-part-1'": {
-      status: 301,
-      destination: "/posts/data-engineering-primer-part-1"
-    },
+    '/blog/data-engineering-primer-part-1': '/posts/data-engineering-primer-part-1'
   },
   integrations: [sitemap({
     filter: page => SITE.showArchives || !page.endsWith("/archives"),
