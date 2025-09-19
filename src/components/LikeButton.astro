@@ -106,6 +106,23 @@ try {
     color: #ff0066;
   }
 
+  .like-error-message {
+    font-size: 0.8rem;
+    color: #dc2626;
+    background-color: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 0.375rem;
+    padding: 0.5rem;
+    margin-top: 0.5rem;
+    display: none;
+    animation: fadeIn 0.3s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
   @keyframes heartBeat {
     0% { transform: scale(1); }
     14% { transform: scale(1.3); }
@@ -235,13 +252,19 @@ try {
         } else {
           // Revert on error
           this.button.classList.remove('liked');
-          const errorText = await response.text();
-          console.error('Failed to add like:', response.status, response.statusText, errorText);
+          const errorData = await response.json().catch(() => ({ message: 'Unable to add like. Please try again.' }));
+          console.error('Failed to add like:', response.status, response.statusText, errorData);
+          
+          // Show user-friendly error message from server or fallback
+          this.showErrorMessage(errorData.message || 'Unable to add like. Please try again.');
         }
       } catch (error) {
         // Revert on error
         this.button.classList.remove('liked');
         console.error('Error adding like:', error);
+        
+        // Show user-friendly error message
+        this.showErrorMessage('Connection error. Please check your internet and try again.');
       } finally {
         this.isLiking = false;
         // Remove clicked class after animation
@@ -258,10 +281,38 @@ try {
         if (response.ok) {
           const data = await response.json();
           this.countElement.textContent = data.likes.toLocaleString();
+        } else {
+          // Show a subtle indicator that count couldn't be loaded
+          this.countElement.textContent = '?';
+          this.countElement.title = 'Like count unavailable';
         }
       } catch (error) {
         console.error('Error refreshing like count:', error);
+        this.countElement.textContent = '?';
+        this.countElement.title = 'Like count unavailable';
       }
+    }
+
+    // Method to show user-friendly error messages
+    showErrorMessage(message: string) {
+      // Create or update error message element
+      let errorElement = this.container.querySelector('.like-error-message') as HTMLElement;
+      
+      if (!errorElement) {
+        errorElement = document.createElement('div');
+        errorElement.className = 'like-error-message';
+        this.container.appendChild(errorElement);
+      }
+      
+      errorElement.textContent = message;
+      errorElement.style.display = 'block';
+      
+      // Auto-hide after 5 seconds
+      setTimeout(() => {
+        if (errorElement) {
+          errorElement.style.display = 'none';
+        }
+      }, 5000);
     }
 
     // Clean up method

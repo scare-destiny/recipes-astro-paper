@@ -19,7 +19,10 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
     
     if (!slug) {
       console.error('No slug provided');
-      return new Response(JSON.stringify({ error: 'Slug is required' }), {
+      return new Response(JSON.stringify({ 
+        error: 'Unable to process like request',
+        message: 'Please refresh the page and try again'
+      }), {
         status: 400,
         headers: { 'Content-Type': 'application/json' }
       });
@@ -62,7 +65,10 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
 
     if (insertError) {
       console.error('Error inserting like:', insertError);
-      return new Response(JSON.stringify({ error: 'Failed to add like', details: insertError.message }), {
+      return new Response(JSON.stringify({ 
+        error: 'Unable to save your like',
+        message: 'Please try again in a moment'
+      }), {
         status: 500,
         headers: { 'Content-Type': 'application/json' }
       });
@@ -76,8 +82,11 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
 
     if (countError) {
       console.error('Error getting count:', countError);
-      return new Response(JSON.stringify({ error: 'Failed to get updated count' }), {
-        status: 500,
+      return new Response(JSON.stringify({ 
+        error: 'Like added but count unavailable',
+        message: 'Your like was saved successfully'
+      }), {
+        status: 200,
         headers: { 'Content-Type': 'application/json' }
       });
     }
@@ -94,7 +103,10 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
     });
   } catch (error) {
     console.error('Error in add like endpoint:', error);
-    return new Response(JSON.stringify({ error: 'Internal server error' }), {
+    return new Response(JSON.stringify({ 
+      error: 'Something went wrong',
+      message: 'Please try again later'
+    }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' }
     });
