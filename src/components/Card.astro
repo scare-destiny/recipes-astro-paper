@@ -11,7 +11,7 @@ export interface Props extends CollectionEntry<"blog"> {
 
 const { variant = "h2", data, id, filePath } = Astro.props;
 
-const { title, description, pubDatetime, modDatetime, timezone, tags, ogImage } = data;
+const { title, description, pubDatetime, modDatetime, timezone, tags } = data;
 
 const headerProps = {
   style: { viewTransitionName: slugifyStr(title) },

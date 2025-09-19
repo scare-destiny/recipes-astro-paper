@@ -1,4 +1,3 @@
-import React from 'react';
 import image from '@/assets/images/Eugene_Venger.jpg';
 // import { FadeIn, FadeInStagger } from '~/components/react/Animations/FadeIn';
 
