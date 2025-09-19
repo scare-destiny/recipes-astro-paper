@@ -236,11 +236,51 @@ try {
         }, 600);
       }
     }
+
+    // Method to refresh the like count from server
+    async refreshLikeCount() {
+      try {
+        const response = await fetch(`/api/likes/${encodeURIComponent(this.slug)}`);
+        if (response.ok) {
+          const data = await response.json();
+          this.countElement.textContent = data.likes.toLocaleString();
+        }
+      } catch (error) {
+        console.error('Error refreshing like count:', error);
+      }
+    }
+
+    // Clean up method
+    destroy() {
+      this.button.removeEventListener('click', this.handleLike.bind(this));
+    }
   }
 
-  // Initialize all like buttons on the page
-  document.addEventListener('DOMContentLoaded', () => {
+  // Global registry to keep track of initialized buttons
+  let likeButtonInstances: LikeButton[] = [];
+
+  function initializeLikeButtons() {
+    console.log('Initializing like buttons...');
+    
+    // Clean up existing instances
+    likeButtonInstances.forEach(instance => instance.destroy());
+    likeButtonInstances = [];
+    
+    // Initialize new instances
     const likeContainers = document.querySelectorAll('.like-button-container');
-    likeContainers.forEach(container => new LikeButton(container as HTMLElement));
-  });
+    console.log(`Found ${likeContainers.length} like button containers`);
+    
+    likeContainers.forEach(container => {
+      const instance = new LikeButton(container as HTMLElement);
+      likeButtonInstances.push(instance);
+      // Refresh count on initialization (for navigation)
+      instance.refreshLikeCount();
+    });
+  }
+
+  // Initialize on DOM content loaded
+  document.addEventListener('DOMContentLoaded', initializeLikeButtons);
+  
+  // Reinitialize after Astro page swaps (navigation)
+  document.addEventListener('astro:after-swap', initializeLikeButtons);
 </script>
