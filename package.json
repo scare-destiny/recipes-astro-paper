@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro check && astro build && pagefind --site dist && cp -r dist/pagefind public/",
+    "database": "npx supabase gen types typescript --project-id 'ftqkyjtxwjkjtqnpoyyf' --schema public > database.types.ts",
     "preview": "astro preview",
     "sync": "astro sync",
     "astro": "astro",
