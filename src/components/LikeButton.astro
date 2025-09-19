@@ -10,9 +10,13 @@ const { slug } = Astro.props;
 let initialLikes = 0;
 try {
   const response = await fetch(`${Astro.url.origin}/api/likes/${encodeURIComponent(slug)}`);
+  console.log('Initial fetch response:', response.status, response.statusText);
   if (response.ok) {
     const data = await response.json();
     initialLikes = data.likes;
+    console.log('Initial likes loaded:', initialLikes);
+  } else {
+    console.error('Failed to fetch initial likes:', response.status, response.statusText);
   }
 } catch (error) {
   console.error('Error fetching initial likes:', error);
@@ -179,6 +183,7 @@ try {
     async handleLike() {
       if (this.isLiking) return;
       
+      console.log('Like button clicked, slug:', this.slug);
       this.isLiking = true;
       
       // Immediate visual feedback
@@ -186,6 +191,7 @@ try {
       this.countElement.classList.add('updating');
       
       try {
+        console.log('Sending POST request to /api/likes/add');
         const response = await fetch('/api/likes/add', {
           method: 'POST',
           headers: {
@@ -194,8 +200,11 @@ try {
           body: JSON.stringify({ slug: this.slug }),
         });
 
+        console.log('Response status:', response.status, response.statusText);
+
         if (response.ok) {
           const data = await response.json();
+          console.log('Like added successfully:', data);
           
           // Animate count update
           setTimeout(() => {
@@ -212,7 +221,8 @@ try {
         } else {
           // Revert on error
           this.button.classList.remove('liked');
-          console.error('Failed to add like');
+          const errorText = await response.text();
+          console.error('Failed to add like:', response.status, response.statusText, errorText);
         }
       } catch (error) {
         // Revert on error
