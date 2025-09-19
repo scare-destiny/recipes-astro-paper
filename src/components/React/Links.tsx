@@ -10,6 +10,7 @@ import {
   Mail,
   ExternalLink
 } from 'lucide-react';
+import image from '@/assets/images/Eugene_Venger.jpg';
 
 
 const containerVariants: Variants = {
@@ -326,6 +327,21 @@ export default function Links() {
           {/* Logo Section */}
           <motion.div variants={itemVariants} className="text-center space-y-6">
             <Logo />
+
+
+            {/* Profile Photo */}
+            <motion.div
+              className="flex justify-center"
+              variants={itemVariants}
+              whileHover={{ scale: 1.05 }}
+              transition={{ duration: 0.2 }}
+            >
+              <div className="w-20 h-20 rounded-full  p-1 bg-white/80 backdrop-blur-sm">
+                <div className="">
+                <img className='rounded-full' src={image.src} alt="something"></img>
+                </div>
+              </div>
+            </motion.div>
             
             <div className="space-y-3">
               <motion.p 
@@ -371,6 +387,31 @@ export default function Links() {
               ))}
             </div>
           </motion.div> */}
+
+<motion.div variants={itemVariants} className="space-y-4">
+            <motion.div
+              className="p-6 rounded-2xl border-2 border-dashed border-gray-300 bg-gray-50/80 backdrop-blur-sm transition-all duration-300 hover:border-pink-300 hover:bg-pink-50/80"
+              variants={linkVariants}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              <div className="text-center space-y-3">
+                <div className="w-12 h-12 mx-auto bg-gray-200 rounded-xl flex items-center justify-center">
+                  <motion.div
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+                    className="text-gray-500"
+                  >
+                    ⚡
+                  </motion.div>
+                </div>
+                <h3 className="text-lg font-semibold text-gray-700">More to come</h3>
+                <p className="text-gray-500 text-sm">
+                  Working on new projects and content. Check back soon!
+                </p>
+              </div>
+            </motion.div>
+          </motion.div>
 
           {/* Footer */}
           <motion.div 
