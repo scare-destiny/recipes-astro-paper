@@ -1,0 +1,12 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import LinksComponent from '@/components/React/Links'
+import Socials from "@/components/Socials.astro";
+---
+
+<Layout title='All Links' description="Place to store all my resources.">
+    <div class="min-h-screen flex flex-col justify-center lg:justify-evenly">
+    <LinksComponent client:idle />
+  <Socials centered  />
+</div>
+</Layout>
