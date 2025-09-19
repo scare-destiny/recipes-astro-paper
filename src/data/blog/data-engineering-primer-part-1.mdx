@@ -1,0 +1,155 @@
+---
+pubDatetime: 2024-07-02T15:25:24+00:00
+title: Data Engineering Primer - Part 1
+featured: true
+draft: false
+tags:
+  - data
+description: My Attempt to Make Data Engineering Sexy After Reading One-Third of a Data Engineering Book.
+---
+
+
+
+
+
+![](@/assets/images/data-engineering-primer-part-1/data-engineering.jpeg)
+
+Lately, I've been reading a great book called "<a href='https://www.amazon.com/Fundamentals-Data-Engineering-Robust-Systems/dp/1098108302' target='_blank'>Fundamentals of Data Engineering: Plan and Build Robust Data Systems</a>".
+
+
+I've made my way through a third of the book, and it has been so insightful and full of knowledge that I decided to put on my blogger hat and share the most interesting bits. After all, sharing is caring.
+
+## Table of contents
+
+### This part will cover the following:
+
+- Definitions of data engineering
+- Data Engineering Lifecycle
+- Data Maturity Model (even data has its ups and downs)
+- Self-promo at the end of the article (whoa, so unexpected)
+
+## WTF Is Data Engineering 
+
+Let's boil it down to some shared definitions.
+
+{/* <Blockquote
+ 
+  author={{ name: 'Joe Reis', role: 'Fundamentals of Data Engineering: Plan and Build Robust Data Systems' }}
+  
+  
+>
+Data engineering is the development, implementation, and maintenance of systems and processes that take in raw data and produce high-quality, consistent information that supports downstream use cases, such as analysis and machine learning. Data engineering is the intersection of security, data management, DataOps, data architecture, orchestration, and software engineering. A data engineer manages the data engineering lifecycle, beginning with getting data from source systems and ending with serving data for use cases, such as analysis or machine learning.
+</Blockquote> */}
+
+I really like how Joe Reis puts it: we take in the raw data and turn it into information that can be used for analysis and machine learning. Its intersection with different disciplines is why I love this field and feel very enthusiastic about it.
+
+## Data Engineering Lifecycle 
+
+
+![](@/assets/images/data-engineering-primer-part-1/data-engineering-cycle.png)
+
+Here are the stages of the data engineering lifecycle:
+
+- Generation
+- Storage
+- Ingestion
+- Transformation
+- Serving
+
+
+The data engineering lifecycle starts by getting data from source systems (could be anything from websites to IOT devices) and then storing it. Next, we transform the data and then move on to our main goal, serving data to analysts, data scientists, ML engineers, and others. In reality, storage occurs throughout the lifecycle as data flows from beginning to end. Therefore, the diagram shows the storage “stage” as a foundation that underpins other stages.
+
+
+In general, the storage, ingestion, transformation stages can get a bit jumbled. It is ok.
+
+![](@/assets/images/data-engineering-primer-part-1/data-maturity.png)
+
+
+
+## Data Maturity Model
+
+Data maturity is the progression toward higher data utilization, capabilities, and integration across the organization, but data maturity does not simply depend on the age or revenue of a company. An early-stage startup can have greater data maturity than a 100-year-old company with annual revenues in the billions. What matters is the way data is leveraged as a competitive advantage.
+
+Data maturity model has three stages: starting with data, scaling with data, and leading with data. 
+
+
+### Stage 1: Starting with data
+
+When a company first begins working with data, it's at the beginning of its data journey. At this point:
+
+- Goals might be unclear or not defined at all
+- Data systems are just starting to be planned
+- Few people, if any, are using data regularly
+- The data team is very small
+- Data engineers wear many hats, often doing data science and software engineering too
+
+The main goal for data engineers at this stage is to move quickly and show the value of data.
+
+Most people in the company don't really understand how to use data effectively yet, but they want to. Reports and analyses are usually done on the fly, without much planning.
+
+It's tempting to jump into machine learning right away, but it's not recommended. Many teams struggle when they try ML before they have a good data foundation. It's possible to get some wins with ML at this stage, but it's rare.
+
+### What Data Engineers Should Focus On
+
+1. Get support from company leaders. Try to find someone who will back your efforts to build data systems.
+2. Plan out the data systems (you'll probably do this alone). Figure out what the company wants to achieve with data and design systems to support those goals.
+3. Find and check the data that will help with important projects.
+4. Build a solid base for future data work. You might need to do some analysis and reporting yourself until more people are hired.
+
+### Tips for This Stage
+
+- Get some quick wins to show the value of data. But be careful - quick solutions can create problems later. Have a plan to fix these.
+- Talk to people across the company. Don't work in isolation. If you don't communicate, you might spend time on things that aren't useful.
+- Use ready-made solutions when you can. Don't make things more complicated than they need to be.
+- Only build custom solutions when they give your company a real advantage.
+
+Remember, this is a tricky stage with many potential problems. Stay focused on providing value and building a strong foundation for future data work.
+
+
+### Stage 2: Scaling with data
+
+A company has now established formal data practices and moved beyond ad hoc data requests. The next challenge is building scalable data systems and planning for a truly data-driven future. Data engineering roles shift from generalists to specialists, each focusing on specific parts of the data lifecycle.
+
+### In stage 2 of data maturity, a data engineer's goals are to:
+
+- Implement formal data practices
+- Develop scalable and robust data architectures
+- Adopt DevOps and DataOps practices
+- Create systems that support machine learning
+- Avoid unnecessary work unless it provides a competitive advantage
+
+### Key issues to be aware of include:
+
+- There's a temptation to adopt the latest technologies just because famous startups do it. Focus on technologies that deliver real value to your customers.
+- The biggest challenge in scaling is not the technology, but the data engineering team itself. Aim for solutions that are easy to deploy and manage to increase your team's efficiency.
+- Instead of positioning yourself as a tech wizard, focus on practical leadership. Communicate the practical benefits of data to other teams and teach them how to use and benefit from it.
+
+### Stage 3: Leading with data
+
+At this stage, the company is truly data-driven. Automated systems and pipelines built by data engineers enable self-service analytics and machine learning for everyone. New data sources can be added easily, providing clear value. Data engineers ensure data is always available through proper controls and practices. Their roles continue to become more specialized.
+
+### In stage 3 of data maturity, data engineers will:
+
+- Automate the seamless integration and use of new data
+- Build custom tools and systems to leverage data for a competitive edge
+- Focus on data management, including governance and quality, as well as DataOps
+- Deploy tools to distribute data across the organization, like data catalogs and metadata management systems
+- Collaborate effectively with software engineers, ML engineers, analysts, and others
+- Foster a collaborative environment where everyone can communicate openly
+
+### Key issues to watch out for include:
+
+- Complacency is a big risk at this stage. Continuous maintenance and improvement are necessary to avoid regressing.
+- Technology distractions are more dangerous here. Avoid pursuing expensive projects that don't add business value. Use custom technology only when it provides a clear competitive advantage.
+
+
+This is it for now. In the next parts, I'd like to publish more technical nuances. Feel free to email or text me with your suggestions!
+{/* <Blockquote
+ 
+  author={{ name: 'Joe Reis', role: 'Fundamentals of Data Engineering: Plan and Build Robust Data Systems' }}
+  
+  
+>
+Data analysts (or business analysts) seek to understand business performance and trends. Whereas data scientists are forward-looking, a data analyst typically focuses on the past or present
+
+</Blockquote> */}
