@@ -5,8 +5,10 @@ import Socials from "@/components/Socials.astro";
 ---
 
 <Layout title='All Links' description="Place to store all my resources.">
-    <div class="min-h-screen flex flex-col justify-start ">
-    <LinksComponent client:idle />
-  <Socials centered  />
-</div>
+  <div class="min-h-screen flex flex-col justify-start py-6 md:py-12 px-4">
+    <div class="flex-grow flex flex-col justify-center space-y-8 md:space-y-12">
+      <LinksComponent client:idle />
+      <Socials centered />
+    </div>
+  </div>
 </Layout>
