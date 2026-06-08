@@ -33,7 +33,7 @@ export default defineConfig({
 
   markdown: {
     remarkPlugins: [remarkToc, [remarkCollapse, { test: "Table of contents" }]],
-    rehypePlugins: [rehypeMermaid],
+    rehypePlugins: [[rehypeMermaid, { strategy: "mermaid-js" }]],
     syntaxHighlight: {
       type: "shiki",
       excludeLangs: ["mermaid"],
