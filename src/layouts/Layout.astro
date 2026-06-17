@@ -2,7 +2,8 @@
 import { ClientRouter } from "astro:transitions";
 import { PUBLIC_GOOGLE_SITE_VERIFICATION } from "astro:env/client";
 import { SITE } from "@/config";
-import Umami from '@/components/analytics/Umami.astro'
+import { SOCIALS } from "@/constants";
+import Umami from "@/components/analytics/Umami.astro";
 import "@/styles/global.css";
 
 export interface Props {
@@ -20,7 +21,6 @@ export interface Props {
 const {
   title = SITE.title,
   author = SITE.author,
-  profile = SITE.profile,
   description = SITE.desc,
   ogImage = SITE.ogImage ? `/${SITE.ogImage}` : "/og.png",
   canonicalURL = new URL(Astro.url.pathname, Astro.url),
@@ -31,20 +31,59 @@ const {
 
 const socialImageURL = new URL(ogImage, Astro.url);
 
+const isArticle = Boolean(pubDatetime);
+
+// Site-wide entity graph: lets Google build the "Eugene Venger" entity and
+// control the brand SERP. Person + WebSite are emitted on every page; the
+// BlogPosting node is only added on actual post pages (those with pubDatetime).
+const personId = `${SITE.website}#person`;
+const websiteId = `${SITE.website}#website`;
+
+const sameAs = SOCIALS.filter(s => s.href.startsWith("http")).map(s => s.href);
+
+const person = {
+  "@type": "Person",
+  "@id": personId,
+  name: SITE.author,
+  url: SITE.website,
+  ...(sameAs.length > 0 && { sameAs }),
+};
+
+const website = {
+  "@type": "WebSite",
+  "@id": websiteId,
+  url: SITE.website,
+  name: SITE.title,
+  description: SITE.desc,
+  inLanguage: SITE.lang || "en",
+  publisher: { "@id": personId },
+  potentialAction: {
+    "@type": "SearchAction",
+    target: {
+      "@type": "EntryPoint",
+      urlTemplate: `${SITE.website}search?q={search_term_string}`,
+    },
+    "query-input": "required name=search_term_string",
+  },
+};
+
+const blogPosting = isArticle
+  ? {
+      "@type": "BlogPosting",
+      headline: `${title}`,
+      image: `${socialImageURL}`,
+      url: `${canonicalURL}`,
+      mainEntityOfPage: `${canonicalURL}`,
+      datePublished: pubDatetime?.toISOString(),
+      ...(modDatetime && { dateModified: modDatetime.toISOString() }),
+      author: { "@id": personId },
+      publisher: { "@id": personId },
+    }
+  : null;
+
 const structuredData = {
   "@context": "https://schema.org",
-  "@type": "BlogPosting",
-  headline: `${title}`,
-  image: `${socialImageURL}`,
-  datePublished: `${pubDatetime?.toISOString()}`,
-  ...(modDatetime && { dateModified: modDatetime.toISOString() }),
-  author: [
-    {
-      "@type": "Person",
-      name: `${author}`,
-      ...(profile && { url: profile }),
-    },
-  ],
+  "@graph": [website, person, ...(blogPosting ? [blogPosting] : [])],
 };
 ---
 
@@ -69,12 +108,16 @@ const structuredData = {
     <link rel="sitemap" href="/sitemap-index.xml" />
 
     <!-- Open Graph / Facebook -->
+    <meta property="og:type" content={isArticle ? "article" : "website"} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:image" content={socialImageURL} />
+    <meta property="og:site_name" content={SITE.author} />
+    <meta property="og:locale" content="en_US" />
 
     <!-- Article Published/Modified time -->
+    {isArticle && <meta property="article:author" content={author} />}
     {
       pubDatetime && (
         <meta
@@ -115,7 +158,16 @@ const structuredData = {
       href={new URL("rss.xml", Astro.site)}
     />
 
-    <meta name="theme-color" content="" />
+    <meta
+      name="theme-color"
+      media="(prefers-color-scheme: light)"
+      content="#fafcfc"
+    />
+    <meta
+      name="theme-color"
+      media="(prefers-color-scheme: dark)"
+      content="#212737"
+    />
 
     {
       // If PUBLIC_GOOGLE_SITE_VERIFICATION is set in the environment variable,
@@ -130,7 +182,6 @@ const structuredData = {
     }
 
     <Umami />
-
 
     <ClientRouter />
 

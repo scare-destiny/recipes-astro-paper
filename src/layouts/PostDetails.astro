@@ -8,6 +8,7 @@ import Datetime from "@/components/Datetime.astro";
 import EditPost from "@/components/EditPost.astro";
 import LikeButton from "@/components/React/LikeButton";
 import ShareLinks from "@/components/ShareLinks.astro";
+import RelatedPosts from "@/components/RelatedPosts.astro";
 import BackButton from "@/components/BackButton.astro";
 import BackToTopButton from "@/components/BackToTopButton.astro";
 import { getPath } from "@/utils/getPath";
@@ -166,6 +167,10 @@ const nextPost =
         )
       }
     </div>
+
+    <hr class="my-6 border-dashed" />
+
+    <RelatedPosts currentPost={post} {posts} />
   </main>
   <Footer />
 </Layout>
@@ -238,7 +243,9 @@ const nextPost =
    * allowing users to copy code easily. */
   function attachCopyButtons() {
     const copyButtonLabel = "Copy";
-    const codeBlocks = Array.from(document.querySelectorAll("pre:not(.mermaid)"));
+    const codeBlocks = Array.from(
+      document.querySelectorAll("pre:not(.mermaid)")
+    );
 
     for (const codeBlock of codeBlocks) {
       const wrapper = document.createElement("div");
@@ -297,15 +304,16 @@ const nextPost =
     if (!diagrams.length) return;
 
     const mermaid = (
-      await import(
-        "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs"
-      )
+      await import("https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs")
     ).default;
 
     const isDark =
       document.documentElement.getAttribute("data-theme") === "dark";
 
-    mermaid.initialize({ startOnLoad: false, theme: isDark ? "dark" : "default" });
+    mermaid.initialize({
+      startOnLoad: false,
+      theme: isDark ? "dark" : "default",
+    });
     await mermaid.run({ nodes: diagrams });
   }
 

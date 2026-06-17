@@ -1,0 +1,45 @@
+---
+import type { CollectionEntry } from "astro:content";
+import Card from "@/components/Card.astro";
+import { slugifyStr } from "@/utils/slugify";
+
+export interface Props {
+  currentPost: CollectionEntry<"blog">;
+  posts: CollectionEntry<"blog">[];
+  maxResults?: number;
+}
+
+const { currentPost, posts, maxResults = 3 } = Astro.props;
+
+// Surface posts that share the most tags with the current one — builds
+// internal-linking clusters (topical authority) and keeps readers on-site.
+const currentTags = new Set(currentPost.data.tags.map(t => slugifyStr(t)));
+
+const related = posts
+  .filter(p => p.id !== currentPost.id && !p.data.draft)
+  .map(p => ({
+    post: p,
+    shared: p.data.tags.filter(t => currentTags.has(slugifyStr(t))).length,
+  }))
+  .filter(entry => entry.shared > 0)
+  .sort((a, b) =>
+    b.shared !== a.shared
+      ? b.shared - a.shared
+      : b.post.data.pubDatetime.getTime() - a.post.data.pubDatetime.getTime()
+  )
+  .slice(0, maxResults)
+  .map(entry => entry.post);
+---
+
+{
+  related.length > 0 && (
+    <div data-pagefind-ignore>
+      <h2 class="text-2xl font-semibold tracking-wide">Related Posts</h2>
+      <ul>
+        {related.map(p => (
+          <Card variant="h3" {...p} />
+        ))}
+      </ul>
+    </div>
+  )
+}
