@@ -1,0 +1,51 @@
+name: Notify Search Console
+
+permissions:
+  contents: read
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "src/data/blog/**"
+
+jobs:
+  notify:
+    name: Request indexing for new/changed posts
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+
+    steps:
+      - name: "☁️ Checkout repository"
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: "📦 Install pnpm"
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.11.1
+
+      - name: "Use Node.js 20"
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "pnpm"
+
+      - name: "📦 Install dependencies"
+        run: pnpm install
+
+      - name: "🔍 Find changed blog posts"
+        id: changed
+        run: |
+          FILES=$(git diff --diff-filter=AM --name-only HEAD^ HEAD -- 'src/data/blog/*.md' 'src/data/blog/*.mdx')
+          echo "files<<EOF" >> "$GITHUB_OUTPUT"
+          echo "$FILES" >> "$GITHUB_OUTPUT"
+          echo "EOF" >> "$GITHUB_OUTPUT"
+
+      - name: "📡 Notify Search Console"
+        if: steps.changed.outputs.files != ''
+        env:
+          GOOGLE_INDEXING_SA_KEY: ${{ secrets.GOOGLE_INDEXING_SA_KEY }}
+        run: node scripts/notify-search-console.mjs ${{ steps.changed.outputs.files }}
