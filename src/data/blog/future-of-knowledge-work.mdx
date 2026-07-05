@@ -1,6 +1,6 @@
 ---
 pubDatetime: 2026-07-05T12:00:00.000+02:00
-title: Future of knowledge work
+title: The Future of Knowledge Work Is Hybrid
 featured: true
 draft: true
 tags:
@@ -9,130 +9,95 @@ tags:
   - agents
 description: Models made implementation cheap. What's expensive now is understanding problems, directing agents, and explaining the result to a human — the hybrid skill set the FDE role was invented for.
 slug: 'future-of-knowledge-work'
+ogImage: '(@/assets/images/future-of-knowledge-work.jpeg)'
 ---
 
-{/*
-OUTLINE — draft from these section stubs. Each section lists key points + sources.
+![Future of Knowledge Work](@/assets/images/future-of-knowledge-work.jpeg)
 
-Title alternatives (if you want something sharper than the current one):
-- The Future of Knowledge Work Is Hybrid - I WANT THIS
-- Hybrid Is the New Senior
-- Implementation Is Cheap. Understanding Isn't.
+Two years ago, if a client needed a simple internal app — a CRUD interface over a database, nothing fancy — they hired a software engineer. There was no other way.
 
-Audience: FDE / AI Engineer hiring managers. The article is evidence, not a pitch.
-Voice: direct, short sentences, personal, no corporate speak.
-Positioning guardrails: manufacturing client stays anonymous ("a B2B manufacturing group"), only the $4M→$9M ARR figure, no other stats about it.
-*/}
+Last month I watched a client build one himself. No coding background. He described what he needed to an agent, corrected it a few times, and shipped. And here's the uncomfortable part: he had something most developers I know don't. He knew exactly what the app needed to do, down to the edge cases only someone who lives in that business would know. And he was excited about it.
 
-## Hook — a workday that didn't exist two years ago
+So if agents do the implementing, what exactly are we paid for now?
 
-{/*
-- Open with a real moment: two years ago clients had to hire a software engineer to build a CRUD app. Now they can do it themseles - and they have what most developers don't - domain expertise and enthusiasm.
-- Land the question that carries the article: if agents do the implementing,
-  what exactly are we paid for now?
-*/}
+I've been chewing on this question for months. The answer changed how I think about my own career — including the parts of it I used to hide.
 
-## What changed: models stopped being autocomplete
+## Models stopped being autocomplete
 
-{/*
-- 18 months ago: suggestion engines. Today: coworkers that plan, execute, verify.
-- Frontier cadence — four flagship model launches within months (Claude, GPT, Gemini
-  reshuffling the top of the benchmarks repeatedly). Design your stack to swap models
-  like bumping a dependency.
-- Keep tight: 3-4 paragraphs. This section earns the reader's trust that I follow
-  the space, nothing more.
-- Source: The Batch / DeepLearning.AI on model cadence.
-- Google's "The New SDLC With Vibe Coding" (Osmani/Saboo/Kartakis, May 2026) as
-  institutional confirmation: AI compresses the SDLC *unevenly* — implementation
-  that took weeks now takes hours, while requirements, architecture, and
-  verification stay human-paced. The developer's role shifts from primary
-  implementor to "system designer and quality arbiter."
-  Source: https://drive.google.com/file/d/1IR7CddF_2FyQo_PdfBNTaEA50EGiVt2r/view
-*/}
+Eighteen months ago, AI coding tools were suggestion engines. You typed, they completed. Useful, but you were still the one doing the work.
 
-## The evidence: expertise beats syntax
+Today they're coworkers. They plan, execute, run the tests, and report back. The frontier keeps moving so fast that betting your workflow on one model is a mistake — we've had four flagship launches within months, each reshuffling the benchmarks. The practical advice: design your stack so swapping models is like bumping a dependency.
 
-{/*
-- Anthropic research, "Agentic coding and persistent returns to expertise":
-  https://read.readwise.io/read/01kvmth42ndwtyf0gjg1n2hvx8
-  - Domain experts reach verified success 2x+ more often than novices.
-  - Division of labor: "People decide what to build, the agent decides how."
-  - Success is determined by how well you understand the problem, not whether
-    you're trained in coding.
-  - Competence captures most of the benefit; deep mastery adds only a bit more.
-- Implication: agents don't substitute for domain expertise — they amplify it.
-- Google SDLC paper says the same thing from the other side ("the shift from syntax
-  to intent"): the skills that matter now are decomposition, evaluation, and system
-  design — and "context engineering" (feeding agents your domain knowledge, codebase
-  conventions, guardrails) is "the real skill." Two independent sources, one conclusion.
-- Conductor vs orchestrator (Google's framing): real-time pair-programming vs async
-  multi-agent delegation. The orchestrator role is knowledge work's new shape.
-- Founder's Playbook angle (secondary): turning domain knowledge into AI context is
-  the compounding moat. https://read.readwise.io/read/01kv5zct2z2r53zeygtwxghyac
-*/}
+Google recently put institutional weight behind what practitioners already felt. Their paper [The New SDLC With Vibe Coding](https://drive.google.com/file/d/1IR7CddF_2FyQo_PdfBNTaEA50EGiVt2r/view) (Osmani, Saboo, Kartakis — May 2026) makes one observation I keep coming back to: AI compresses the software lifecycle *unevenly*. Implementation that took weeks now takes hours. Requirements, architecture, and verification are still human-paced. The developer's role, in their words, shifts from primary implementor to "system designer and quality arbiter."
 
-## The new bottleneck: the loop, not the code
+The bottleneck didn't disappear. It moved.
 
-{/*
-- "The costliest thing in AI coding is no longer writing code, it's managing the
-  agent loop." https://read.readwise.io/read/01kv5zc566ky9fcjagecze1860
-- Knowledge work is becoming: define the task, design the loop, verify the output,
-  know when to stop it.
-- Google SDLC paper reinforces this with two ideas worth borrowing:
-  - The "factory model": the developer's primary output is not code — it's the
-    system that produces code (specs, agents, quality gates, feedback loops, guardrails).
-  - "Most agent failures, examined honestly, are configuration failures" — one team
-    went from outside Top 30 to Top 5 on Terminal Bench by changing only the harness,
-    no model change. Blaming the model is usually wrong.
-  - The "80% problem": agents generate 80% fast; the last 20% (edge cases, business
-    logic, integration) demands deep contextual knowledge — exactly where domain
-    expertise pays.
-- My lived example (one paragraph, concrete, not a tool list): running production
-  agents means an eval harness across quality dimensions, observability, and
-  per-provider cost control — the unglamorous work that makes agents shippable.
-- Loops that survive restarts / run on schedules are an infrastructure problem:
-  https://read.readwise.io/read/01kw7bxs87yr4jvvnpb3188293
-*/}
+## Expertise beats syntax
 
-## The first job built for this era: the forward deployed engineer
+This isn't just vibes. Anthropic analyzed [~400,000 Claude Code sessions](https://www.anthropic.com/research/claude-code-expertise) and the findings are blunt:
 
-{/*
-- Andrew Ng, The Batch: FDE is the buzzy new Silicon Valley job; OpenAI and
-  Anthropic are building teams to embed FDEs in client orgs.
-  https://read.readwise.io/read/01kssjsaxgk99zst17tvn40cz2
-- Origin: Palantir, two decades ago — engineers shipped code overnight next to
-  Special Forces in Afghanistan. You can't build for an environment without being in it.
-- Job anatomy: audit → evals → deployment.
-  https://read.readwise.io/read/01kv5zd1n62k4b58q5estvctg6
-- The deal-breaker skill isn't coding — it's explaining to a non-technical VP what
-  AI can and can't do. No communication, no deployment.
-- Why now: if intelligence is commoditized, the only edge is how and where you use it.
-*/}
+- There's a clear division of labor: people make about 70% of the planning decisions, the agent makes about 80% of the execution decisions. **People decide what to build. The agent decides how.**
+- Sessions rated as expert reach verified success **more than twice as often** as novice sessions. And when things go wrong, novices abandon the session at several times the rate of everyone else.
+- The kicker: it's *domain* expertise that predicts success, not coding proficiency. Every major occupation — lawyers, managers, scientists — succeeds at coding tasks within a few points of software engineers. What separates winners is how well they understand the problem, not whether they're trained in coding.
 
-## My take: hybrid is the new senior
+Agents don't substitute for domain expertise. They amplify it.
 
-{/*
-- The thesis. For years my path looked unfocused: PR degree, sales, running an
-  agency (presales, scoping, closing), growth marketing, then engineering.
-  The market called it scattered. Now it's the exact profile the FDE role screens for.
-- Engineering + selling + customer relationships in one person: nobody has to
-  translate between the builder and the buyer.
-- Grounding proof (kept modest, evidence-not-pitch): seven years inside one
-  engagement — a B2B manufacturing group that grew from $4M to $9M ARR — going from
-  growth infrastructure to owning the full production AI stack. The growth happened
-  because the person building the systems also understood the customers.
-- Vulnerable beat: I spent years thinking the sales/PR half of my CV was the part
-  to hide.
-*/}
+Google's paper lands on the same conclusion from the other side. They call it "the shift from syntax to intent": the skills that matter now are decomposition, evaluation, and system design. And the real craft is context engineering — feeding agents your domain knowledge, your conventions, your guardrails. Two independent sources, one conclusion.
+
+There's one more Anthropic finding worth sitting with: the gap between intermediate and expert users is modest. A working grasp of the domain captures most of the benefit. You don't need twenty years in an industry to direct agents well in it — you need enough understanding to know what "correct" looks like. That's learnable. I've done it across manufacturing, e-commerce, and med spas.
+
+## The new bottleneck is the loop
+
+Here's a line that's been making the rounds among people who run agents in production:
+
+> "The costliest thing in AI coding is no longer writing code, it's managing the agent loop."
+
+Boris Cherny — the creator of Claude Code — says his job now is writing loops that prompt the agent, not prompting it himself. In one month, 100% of his contributions to Claude Code were written by Claude Code: 259 merged PRs.
+
+But the romantic version of this ("a thousand agents build your company overnight") isn't the production version. The production version is: you write the loops, and most of your job is making sure they halt, verify their own work, and don't torch your API budget. Uber capped its engineers at $1,500/month per AI tool after burning the annual budget in four months.
+
+Google's paper has a name for the mental model that ties this together: the **factory model**. Your primary output is no longer code — it's the system that produces code. Specs, agents, quality gates, feedback loops, guardrails. And when an agent fails, the instinct to blame the model is usually wrong: "Most agent failures, examined honestly, are configuration failures." One team went from outside the Top 30 to Top 5 on Terminal Bench by changing only the harness around the model. No model change.
+
+This matches everything I've seen running agents in production for the last few years. The glamorous part — the agent writing code — was never the hard part. The hard part is the eval harness that scores outputs across quality dimensions, the observability that tells you *why* Tuesday's run degraded, and the cost controls that keep a retry loop from becoming a four-figure invoice. That's the 20% in what Google calls the 80% problem: agents generate 80% of a feature fast, and the remaining 20% — edge cases, business logic, integration — demands exactly the contextual knowledge the models don't have.
+
+Someone has to bring it. That someone is the job now.
+
+## The first job built for this era
+
+There's already a role that was designed for this reality, and it's having a moment: the **forward deployed engineer**.
+
+Andrew Ng [called it](https://www.deeplearning.ai/the-batch/) one of the buzziest new jobs in Silicon Valley — OpenAI and Anthropic are both building teams to embed FDEs inside client organizations. The role is two decades old: Palantir pioneered it, famously shipping code overnight next to Special Forces units in Afghanistan, on the theory that you cannot build for an environment without being in it.
+
+The anatomy of the job, as people doing it describe it: **audit** (sit with each team, map workflows, decide what should be automated and — just as important — what shouldn't), **evals** (define what "great" looks like and measure the agent against it, because an executive spending millions needs proof, not vibes), and **deployment** (start with the smallest unit of autonomy, expand only when it earns trust).
+
+Notice what's *not* the deal-breaker skill: coding. The deal-breaker is communication. If you can't explain to a non-technical VP what AI can and can't do, there won't be a deployment. One practitioner's summary stuck with me: this is a highly skilled engineer who can understand a customer's problem deeply, write code in a codebase they've never seen, and communicate the business impact to a non-technical decision maker. A million-dollar hire.
+
+The logic underneath is simple. If intelligence is becoming commoditized, the only edge left is how and where you use it. Deciding that — inside a messy, real organization — is the job.
+
+## Hybrid is the new senior
+
+Here's the personal part.
+
+For most of my career, my CV looked unfocused. A PR degree. Sales. Running a small agency — which meant presales, scoping, proposals, closing. Growth marketing. Then, over years, engineering: data pipelines, attribution, and eventually production AI systems. Recruiters didn't know which box to put me in, and honestly, I spent years thinking the sales-and-PR half of my CV was the part to hide. It felt like evidence I'd wandered.
+
+Then the job market flipped, and the profile it now prices highest is the one I'd been apologizing for.
+
+The strongest engagement of my career is the proof I keep coming back to. Seven years with one client — a B2B manufacturing group that grew from $4M to $9M ARR over that time. I started with growth infrastructure: email systems, attribution, lead gen. I ended up owning their full production AI stack. That evolution only happened because I understood their customers, not just their codebase. When I built the news-generation pipeline or deployed the voice agents, I wasn't implementing a spec someone handed me. I was the one who knew why the spec should exist.
+
+Engineering plus selling plus customer relationships in one person means nobody has to translate between the builder and the buyer. In the pre-agent era, that translation layer was an accepted cost — you hired strategists who couldn't build and engineers who couldn't sell, and put project managers between them. When implementation was expensive, specialization made sense. Now implementation is cheap, and the expensive thing is the judgment that spans the whole chain: what to build, whether it's working, and whether the customer actually cares.
+
+The hybrid isn't a compromise candidate anymore. The hybrid is the senior role.
 
 ## What I'd screen for
 
-{/*
-- Close by flipping to the reader — whether hiring or becoming this kind of worker,
-  the questions are the same:
-  1. Can they understand a messy business problem without a spec?
-  2. Can they direct agents to solve it — and verify the result?
-  3. Can they explain the impact to someone non-technical?
-- Quiet positioning close: this is how I work daily. No hard pitch, no CTA beyond
-  an invitation to talk.
-*/}
+Whether you're hiring for this era or becoming the person it needs, I think the questions are the same three:
+
+1. **Can they understand a messy business problem without a spec?** Not "can they implement a ticket" — can they sit with a rev-ops team for a week and come back knowing what's worth automating?
+2. **Can they direct agents to solve it — and verify the result?** Writing the loop is easy. Knowing whether the output is *right*, building the evals that prove it — that's where domain expertise stops being a nice-to-have.
+3. **Can they explain the impact to someone non-technical?** If the answer is no, the work doesn't ship. It doesn't matter how good it is.
+
+Coding used to be the moat. Now it's the commodity. The moat is everything around it: the understanding, the verification, the trust.
+
+That's how I work every day, and it took me fifteen years of "unfocused" career choices to get here. Turns out I wasn't wandering. I was just early.
+
+If any of this resonates — I'm always happy to talk. You know where to find me.
