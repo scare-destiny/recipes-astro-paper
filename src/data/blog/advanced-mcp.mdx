@@ -291,3 +291,13 @@ if __name__ == "__main__":
 # Or expose it as an ASGI app to mount inside Starlette / FastAPI:
 app = mcp.streamable_http_app()
 ```
+
+### A real example
+
+Here's a small MCP I actually shipped that only works because of this transport.
+
+[ZeroBounce](https://www.zerobounce.net/) (an email validation service) ships an official MCP server, but it's **stdio-only** and takes the API key as a **CLI argument**. So it runs on exactly one machine, and the key sits right there in `argv`. Fine for me on my laptop, useless for a team.
+
+So I rebuilt it over StreamableHTTP: [scare-destiny/zero-bounce-mcp](https://github.com/scare-destiny/zero-bounce-mcp). The same tools — `validate_email`, `validate_batch`, `get_credits`, and a few more — served at a single `/mcp` endpoint. Because it's a remote server, I can register it as a **custom connector in claude.ai** and the whole team connects to it. The ZeroBounce API key lives server-side and never travels to the client.
+
+And once it's a remote, authenticated server, you get things that just aren't possible over stdio. I put an OAuth + consent gate in front of it, and every tool call is logged to a per-user audit table — who called what, when, with what errors (never the API key). That's the practical difference between the two transports: stdio is "just me, on this laptop," StreamableHTTP is "a service a team connects to."
