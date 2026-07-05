@@ -52,6 +52,7 @@ function ContactForm() {
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    setResponseMessage(""); // Clear previous messages
 
     const formData = new FormData(event.currentTarget);
 
@@ -61,15 +62,26 @@ function ContactForm() {
         body: formData,
       });
 
+      // 1. Parse the JSON payload from your Astro endpoint
+      const data = await response.json().catch(() => null);
+
       if (!response.ok) {
-        throw new Error("Failed to send message");
+        // 2. Print the exact n8n/server error to your browser console (F12)
+        console.error("🔴 [Contact Form Error] Debug info:", data?.debug || "No extra debug info provided");
+        
+        // 3. Throw the user-friendly message returned by the server
+        throw new Error(data?.message || "Failed to send message");
       }
 
       setResponseMessage("Thanks for reaching out! I’ll get back to you soon.");
+      
+      // Optional: Reset form fields on success
+      (event.target as HTMLFormElement).reset();
+
     } catch (error) {
-      setResponseMessage(
-        `Something went wrong. ${error} Please try again later.`
-      );
+      // 4. Safely extract the error message for the UI notice
+      const clientMessage = error instanceof Error ? error.message : "An unexpected error occurred.";
+      setResponseMessage(`Something went wrong. Error: ${clientMessage}`);
     }
   }
 
@@ -87,34 +99,19 @@ function ContactForm() {
           autoComplete="email"
           required
         />
-        {/* <TextInput label="Company" name="company" autoComplete="organization" /> */}
-        {/* <TextInput label="Phone" type="tel" name="phone" autoComplete="tel" /> */}
         <TextInput label="Message" name="message" required />
         <div className="border border-neutral-300 px-6 py-8 first:rounded-t-2xl last:rounded-b-2xl">
-          {/* <fieldset>
-              <legend className="text-base/6 text-neutral-500">Services</legend>
-              <div className="mt-6 grid grid-cols-1 gap-8 sm:grid-cols-2">
-                <RadioInput required label="Cold Email + Linkedin" name="services" value="cold email and linkedin" />
-                <RadioInput required label="Email Deliverability" name="services" value="email deliverability" />
-                <RadioInput
-                  required
-                  label="Marketing Automation + Web Dev"
-                  name="services"
-                  value="marketing automation and web dev"
-                />
-                <RadioInput
-                  label="Conversion Tracking + Optimization"
-                  name="services"
-                  value="conversion tracking and optimization"
-                />
-              </div>
-            </fieldset> */}
+          {/* Services code if you decide to uncomment it later */}
         </div>
       </div>
       <Button type="submit" className="mt-10">
         Contact now
       </Button>
-      {responseMessage && <p>{responseMessage}</p>}
+      {responseMessage && (
+        <p className={`mt-4 text-sm ${responseMessage.includes("Success") || responseMessage.includes("Thanks") ? "text-emerald-600" : "text-rose-600"}`}>
+          {responseMessage}
+        </p>
+      )}
     </form>
   );
 }
