@@ -2,10 +2,12 @@ export const prerender = false;
 import type { APIRoute } from "astro";
 
 export const POST: APIRoute = async ({ request }) => {
-  const data = await request.formData();
-  const name = data.get("name");
-  const email = data.get("email");
-  const message = data.get("message");
+  const data = await request.json().catch(() => ({}));
+  const { name, email, message } = data as {
+    name?: string;
+    email?: string;
+    message?: string;
+  };
 
   if (!name || !email || !message) {
     return new Response(

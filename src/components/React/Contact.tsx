@@ -59,7 +59,14 @@ function ContactForm() {
     try {
       const response = await fetch("/api/contact", {
         method: "POST",
-        body: formData,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: formData.get("name"),
+          email: formData.get("email"),
+          message: formData.get("message"),
+        }),
       });
 
       // 1. Parse the JSON payload from your Astro endpoint
