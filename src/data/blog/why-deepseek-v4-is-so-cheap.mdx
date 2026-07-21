@@ -35,9 +35,7 @@ When a transformer generates a token, it looks back at every previous token. Eac
 Two costs grow with context length:
 
 1. **Memory.** A 1M-token conversation means a KV cache with a million entries, held in memory for every request.
-2. **Compute.** Every new token loops over all of those entries at every step.
-
-At short contexts this is fine. At a million tokens it's the main cost of inference.
+2. **Compute.** 
 
 DeepSeek's strategy: compress attention using two different techniques.
 
