@@ -1,56 +1,58 @@
 ---
 pubDatetime: 2026-07-21T12:00:00.000+02:00
 title: Why DeepSeek V4 is so cheap
-featured: false
+featured: true
 draft: false
 tags:
   - ai
-description: DeepSeek V4 runs a benchmark task for $0.04 while frontier models charge up to $2.75. The reason is two attention mechanisms - CSA and HCA. This article explores how they work.
+description: DeepSeek V4 runs a benchmark task for $0.04 while frontier models charge up to $2.75. The reason is two attention mechanisms - CSA and HCA. This article explores how they work and what makes DeepSeek V4 so cheap.
 slug: 'why-deepseek-v4-is-so-cheap'
 ---
 
-Same benchmark task. DeepSeek V4 Pro: **$0.04**. Kimi K3: $0.95. Claude Fable 5: **$2.75**.
+DeepSeek V4 Pro: **$0.04**. Kimi K3: $0.95. Claude Fable 5: **$2.75**.
 
 ![Cost per task chart: weighted average cost in USD per Artificial Analysis Intelligence Index task. DeepSeek V4 Pro at $0.04, Kimi K3 at $0.95, Claude Fable 5 at $2.75.](@/assets/images/why-deepseek-v4-is-so-cheap/cost-per-task.png)
 
 DeepSeek is roughly **69x cheaper** than Fable.
 
-Why? Because of hybrid attention mechanisms — CSA and HCA. Here's how they work.
+Why? Because of hybrid attention mechanisms — CSA and HCA. This article explores how they work and what makes DeepSeek V4 so cheap.
 
 ## Table of Contents
-- [Why attention is the expensive part](#why-attention-is-the-expensive-part)
+- [Why attention matters](#why-attention-matters)
 - [Three timescales of memory](#three-timescales-of-memory)
 - [CSA: compress, then pick what matters](#csa-compress-then-pick-what-matters)
 - [HCA: compress harder, look at everything](#hca-compress-harder-look-at-everything)
 - [The receipts](#the-receipts)
-- [The boring reasons it's also cheap](#the-boring-reasons-its-also-cheap)
-- [What this changes](#what-this-changes)
+- [Other reasons it's also cheap](#other-reasons-its-also-cheap)
 
-## Why attention is the expensive part
+## Why attention matters
 
-Quick refresher. When a transformer generates a token, it looks back at every previous token through attention. Each of those previous tokens sits in memory as a key-value (KV) entry — the KV cache.
+When a transformer generates a token, it looks back at every previous token. Each of those previous tokens sits in memory as a key-value (KV) entry — the KV cache.
 
 Two costs grow with context length:
 
 1. **Memory.** A 1M-token conversation means a KV cache with a million entries, held in memory for every request.
-2. **Compute.** Every new token loops over all of those entries, every step.
+2. **Compute.** Every new token loops over all of those entries at every step.
 
 At short contexts this is fine. At a million tokens it's the main cost of inference.
 
-DeepSeek's strategy: stop storing history at full resolution. Compress it using two different techniques.
+DeepSeek's strategy: compress attention using two different techniques.
 
 ## Three timescales of memory
 
 V4 gives the model three kinds of memory, each covering a different range at a different resolution:
 
 ```mermaid
-flowchart TD
-    A[Incoming context: up to 1M tokens] --> B[Sliding window\nmost recent tokens, uncompressed\nfull resolution]
-    A --> C[CSA blocks\n4 tokens → 1 KV entry\nmid-range, selective recall]
-    A --> D[HCA summaries\n128 tokens → 1 KV entry\nlong-range, global gist]
+flowchart LR
+    T(["🔍 New token<br/>looks back at…"]) --> W
+    T --> C
+    T --> H
+    W["<b>Sliding window</b><br/>last 128 tokens<br/>─────<br/>uncompressed<br/>full detail"]
+    C["<b>CSA memory</b><br/>whole history, 4 → 1<br/>─────<br/>compressed<br/>selective recall"]
+    H["<b>HCA memory</b><br/>whole history, 128 → 1<br/>─────<br/>heavily compressed<br/>global gist"]
 ```
 
-The two compressed tiers come from two new attention mechanisms: **CSA** and **HCA**. V4 alternates between them across layers, and both keep a sliding-window branch so the newest tokens are always available at full resolution — you don't want the words the model *just* wrote summarized away mid-sentence.
+Compression comes from two attention mechanisms: **CSA** and **HCA**. All V4 DeepSeek models have these two mechanisms interleaved with a 1:1 ratio, and both keep a 128-token sliding-window branch so the newest tokens aren't compressed.
 
 ## CSA: compress, then pick what matters
 
@@ -58,23 +60,36 @@ The two compressed tiers come from two new attention mechanisms: **CSA** and **H
 
 **First, compression.** Every 4 consecutive tokens get merged into a single KV entry, using learned scores and softmax weights - the model learns *how* to summarize each group of four, rather than just averaging them. The cache shrinks 4x.
 
-**Second, sparse retrieval.** Even a 4x-smaller cache is too big to attend over densely at 1M tokens. So a lightweight module called the **Lightning Indexer** scans the compressed entries and scores their relevance to the current query — cheaply, using low-rank projections instead of full attention. Only the top-k highest-scoring blocks get real attention. Everything else is skipped.
+**Second, sparse retrieval.** Even a 4x-smaller cache is too big to attend over densely at 1M tokens. So a lightweight module called the **Lightning Indexer** scans the compressed entries, scores their relevance to the current query, and picks only the most relevant compressed blocks.
 
 ```mermaid
 flowchart LR
-    Q[Query token] --> LI[Lightning Indexer\nscores all compressed blocks]
-    LI --> S[Select top-k blocks]
-    S --> AT[Attention over\nselected blocks only]
-    C[Compressed cache\n4 tokens → 1 entry] --> LI
+    A["1M tokens"] -->|"compress<br/>4 → 1"| B["250K<br/>compressed entries"]
+    B -->|"Lightning Indexer<br/>scores relevance"| S["top-k blocks<br/>only"]
+    S -->|"full attention"| AT(["✅ Answer"])
 ```
 
-So CSA is compression *and* sparsity stacked: the memory is 4x smaller, and the model only touches the slice of it that matters right now. Precise recall, without paying for full resolution or full coverage.
+So CSA is compression *and* sparsity stacked: the memory is 4x smaller, and the model only touches the slice of it that matters right now.
 
 ## HCA: compress harder, look at everything
 
-**Heavily Compressed Attention** makes the opposite. Instead of 4 tokens per entry, it packs **128 tokens into one** — a cache 32x lighter than CSA's.
+**Heavily Compressed Attention** makes the opposite trade. Instead of 4 tokens per entry, it packs **128 tokens into one** — a cache 32x lighter than CSA's.
 
-At that size, DeepSeek doesn't bother with sparse selection. The compressed cache is small enough that the model is precise.
+At that size, DeepSeek doesn't bother with sparse selection. The compressed cache is small enough that the model attends densely over **all** of it — no indexer, nothing skipped.
+
+```mermaid
+flowchart LR
+    subgraph HCA_L["HCA — global"]
+        direction LR
+        B1["1M tokens"] -->|"128 → 1"| B2["~8K entries"]
+        B2 -->|"cheap enough"| B3["attend to<br/>everything"]
+    end
+    subgraph CSA_L["CSA — precise"]
+        direction LR
+        A1["1M tokens"] -->|"4 → 1"| A2["250K entries"]
+        A2 -->|"pick top-k"| A3["attend to<br/>a few blocks"]
+    end
+```
 
 The two mechanisms are complementary:
 
@@ -82,7 +97,7 @@ The two mechanisms are complementary:
 |---|---|---|
 | Compression | 4 → 1 | 128 → 1 |
 | Attention | Sparse (top-k blocks) | Dense (everything) |
-| Character | Precise, selective | Coarse, global |
+| Character | Precise, selective | cheap, global |
 | Failure mode | Indexer misses a block | Detail lost in summary |
 
 ## The receipts
@@ -92,21 +107,11 @@ The paper's numbers, at 1M-token context versus DeepSeek's own V3.2:
 - **V4-Pro: 27% of the inference FLOPs, 10% of the KV cache.**
 - **V4-Flash: 10% of the FLOPs, 7% of the KV cache.**
 
-There's a stack of smaller tricks compounding on top — the KV cache is stored mostly in FP8, positional encoding only touches the last 64 dimensions, the indexer drops to FP4 at extreme lengths. Each one shaves another slice off memory and compute.
+There are smaller optimizations stacked on top — the KV cache is stored mostly in FP8, positional encoding only touches the last 64 dimensions, the indexer drops to FP4 at extreme lengths.
 
-Cheaper inference per token, and dramatically cheaper inference at long context — which is where agentic workloads actually live. That's how you end up at [$0.04 per benchmark task](https://artificialanalysis.ai/models/deepseek-v4-pro). For reference, the list price is [$0.435 per million input tokens](https://artificialanalysis.ai/articles/deepseek-is-back-among-the-leading-open-weights-models-with-v4-pro-and-v4-flash) — a fraction of what any Western frontier lab charges.
+## Other reasons it's also cheap
 
-## The boring reasons it's also cheap
-
-Architecture isn't everything. DeepSeek also benefits from cheaper electricity, cheaper engineering labor, domestic chip supply, and state backing — and, as an open-weights release, from pricing pressure it deliberately creates. Some slice of that 69x is economics, not attention math.
-
-But the architectural part is public, replicable, and peer-visible. Anyone can read the paper and check the FLOPs claims. That's the part worth understanding.
-
-## What this changes
-
-I pay for tokens every day — agentic coding runs that chew through hundreds of thousands of tokens before lunch. The bill is real enough that I think about context the way I used to think about cloud costs: cache aggressively, trim histories, summarize old turns.
-
-The V4 design points at a future where most of that discipline becomes unnecessary. If a million tokens of context costs cents instead of dollars, "just put the entire codebase in context" stops being a luxury and becomes the default. Whole categories of RAG plumbing exist only because context is expensive. Attention architectures like this are how that assumption dies.
+Architecture isn't everything. DeepSeek also benefits from cheaper electricity, labor, chips and state backing.
 
 ---
 
